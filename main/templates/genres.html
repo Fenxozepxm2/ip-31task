@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Жанры музыки</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'genres' %}">Жанры</a>
+    </nav>
+
+    <h1>Список жанров</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Название</th>
+                <th>Название на англ.</th>
+                <th>Описание</th>
+                <th>Редактировать</th>
+                <th>Удалить</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for g in genres %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ g.name_ru }}</td>
+                <td>{{ g.name_en }}</td>
+                <td>{{ g.description }}</td>
+                <td><a href="{% url 'genre_edit' g.id %}" class="edit-link">Редактировать</a></td>
+                <td><a href="{% url 'genre_delete' g.id %}" class="delete-link" onclick="return confirm('Вы уверены?')">Удалить</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div style="margin-top: 20px;">
+        <a href="{% url 'genre_add' %}" class="add-button">Добавить жанр</a>
+    </div>
+    
+    <footer>footer</footer>
+</body>
+</html>

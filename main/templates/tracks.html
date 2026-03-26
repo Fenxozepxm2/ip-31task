@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Музыкальные треки</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'genres' %}">Жанры</a>
+        <a href="{% url 'tracks' %}">Треки</a>
+    </nav>
+
+    <h1>Список треков</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Название</th>
+                <th>Длительность</th>
+                <th>Жанры</th>
+                <th>Редактировать</th>
+                <th>Удалить</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for track in tracks %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ track.title }}</td>
+                <td>{{ track.duration_formatted }}</td>
+                <td>
+                    {% for genre in track.genres.all %}
+                        {{ genre.name_ru }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        Нет жанров
+                    {% endfor %}
+                </td>
+                <td><a href="{% url 'track_edit' track.id %}" class="edit-link">Редактировать</a></td>
+                <td><a href="{% url 'track_delete' track.id %}" class="delete-link" onclick="return confirm('Вы уверены?')">Удалить</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div style="margin-top: 20px;">
+        <a href="{% url 'track_add' %}" class="add-button">Добавить трек</a>
+    </div>
+    
+    <footer>footer</footer>
+</body>
+</html>

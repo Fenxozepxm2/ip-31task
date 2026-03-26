@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ action }} трек</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid black;
+            background-color: white;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .checkbox-group {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .checkbox-group div {
+            margin: 5px 0;
+        }
+        button {
+            background-color: green;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: aqua;
+        }
+        .errorlist {
+            color: red;
+            list-style: none;
+            padding: 0;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'genres' %}">Жанры</a>
+        <a href="{% url 'tracks' %}">Треки</a>
+    </nav>
+
+    <div class="form-container">
+        <h1>{{ action }} трек</h1>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div class="errorlist">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}">Название трека:</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="errorlist">{{ form.title.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.duration.id_for_label }}">Длительность (секунды):</label>
+                {{ form.duration }}
+                {% if form.duration.errors %}
+                    <div class="errorlist">{{ form.duration.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label>Жанры:</label>
+                <div class="checkbox-group">
+                    {{ form.genres }}
+                </div>
+                {% if form.genres.errors %}
+                    <div class="errorlist">{{ form.genres.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <button type="submit">Сохранить</button>
+            <a href="{% url 'tracks' %}" style="margin-left: 10px; color: blue;">Отмена</a>
+        </form>
+    </div>
+    
+    <footer>footer</footer>
+</body>
+</html>
