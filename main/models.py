@@ -16,12 +16,25 @@ class Genre(models.Model):
     def __str__(self):
         return self.name_ru
 
+
+
+#исполнители
+class Artist(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    image = models.ImageField(upload_to='artists/', blank=True, null=True)
+
+    def __str__(self):
+        return self.name 
+
+
+
 #треки
 class Track(models.Model):
     title = models.CharField(max_length=500, unique=True, verbose_name="Название")
     duration = models.IntegerField(verbose_name="Длительность (секунды)")
     genres = models.ManyToManyField(Genre, verbose_name="Жанры")
-
+    artist = models.ForeignKey(Artist, on_delete=models.RESTRICT, null=True)
+    
     def __str__(self):
         return self.title
     
